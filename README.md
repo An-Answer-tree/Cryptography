@@ -1,7 +1,6 @@
-# Cryptography
-Cryptography algorithm
-
-Start learning Cryptography!!
-Come on and join me!!!!!!!!!!
-
-by Liu
+# 密码学课程设计
+## 实现任务
+1. AES-128对陈加密算法
+2. RSA加密与签名算法
+3. ECC椭圆曲线加密算法
+4. Hash算法（MD5、SHA-512）
