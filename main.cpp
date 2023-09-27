@@ -35,6 +35,10 @@ void AddRoundKey(unsigned char* state, unsigned char* roundKey)
 
 void SubBytes(unsigned char* state)
 {
+    /*Each state has 16 elements, each of which is 8bits (1byte) 
+    and can be represented by two hexadecimal numbers. Byte substitution 
+    is performed in the s-box with the higher hexadecimal number as the 
+    row number and the lower hexadecimal number as the column number*/
     for(int i = 0; i < 16; i++)
     {
         state[i] = s_box[state[i]];
