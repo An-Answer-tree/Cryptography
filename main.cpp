@@ -229,23 +229,24 @@ void AES_Encrypt(unsigned char* message, unsigned char* key)
     }
 
     // Initial part
-    KeyExpansion();
+    unsigned char expandedKey[176];
+    KeyExpansion(key, expandedKey);
     AddRoundKey(state, key);
 
     // Round Part
-    int numOfRound = 16;
+    int numOfRound = 9;
     for(int i = 0; i < numOfRound; i++)
     {
         SubBytes(state);
         ShiftRows(state);
-        MixColumns();
-        AddRoundKey(state, key);
+        MixColumns(state);
+        AddRoundKey(state, expandedKey + (16 * (i + 1)));
     }
 
     //Final Round
     SubBytes(state);
     ShiftRows(state);
-    AddRoundKey(state, key);
+    AddRoundKey(state, expandedKey + 160);
 }
 
 int main()
