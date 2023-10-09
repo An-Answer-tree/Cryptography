@@ -364,7 +364,7 @@ unsigned char* Decrypt(unsigned char* cipher, unsigned char* expanded_key)
 	return plaintext;
 }
 
-unsigned char* string2hex(string text, int n)
+unsigned char* StringToHex(string text, int n)
 {
 	unordered_map<char, int> mp;
     for(int i=0; i<10; i++)
@@ -387,7 +387,7 @@ unsigned char* string2hex(string text, int n)
 	return res;
 }
 
-string hex2string(unsigned char* hex, int n)
+string HexToString(unsigned char* hex, int n)
 {
 	unordered_map<char, int> mp;
     for(int i=0; i<10; i++)
@@ -412,12 +412,14 @@ string hex2string(unsigned char* hex, int n)
 int main() {
 
 	string plaintext;
+	cout << "请输入明文";
 	cin>>plaintext;
 
 	string keytext;
-	cin>>keytext;
+	cin >> keytext;
+	unsigned char *key = StringToHex(keytext, 32);
 
-	unsigned char *key = string2hex(keytext, 32);
+	// KeyExpansion
 	unsigned char *expanded_key = ExpandKey(key);
 
 	int n = plaintext.length();
@@ -431,11 +433,11 @@ int main() {
 		{
 			part_string += "0";
 		}
-		unsigned char* padded_string = string2hex(part_string, 32);
+		unsigned char* padded_string = StringToHex(part_string, 32);
 		unsigned char* cipher = AES_Encrypt(padded_string, expanded_key);
 		unsigned char* reverse_cipher = Decrypt(cipher, expanded_key);
-		string res = hex2string(cipher, 16);
-		string dec = hex2string(reverse_cipher, 16);
+		string res = HexToString(cipher, 16);
+		string dec = HexToString(reverse_cipher, 16);
 		total_enc += res;
 		total_dec += dec;
 		// cout<<"Part: "<<part_string<<" AES128: "<<res<<endl;
