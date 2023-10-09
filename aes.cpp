@@ -229,7 +229,7 @@ void MixColumns(unsigned char* state)
 unsigned char* AES_Encrypt(unsigned char* plaintext, unsigned char* expanded_key)
 {
 	unsigned char state[16];
-	unsigned char* cipher = new unsigned char[16];
+	unsigned char* cipher = new unsigned char[17] {0};
 
 	for (int i = 0; i < 16; i++)
 	{
