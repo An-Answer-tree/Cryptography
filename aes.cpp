@@ -425,7 +425,7 @@ unsigned char* Padding(unsigned char* plaintxt)
             if(i < originalLenth)
                 temp[i] = plaintxt[i];
             else
-                temp[i] = 0;
+                temp[i] = '0';
         }
 
         return temp;
