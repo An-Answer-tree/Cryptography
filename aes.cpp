@@ -229,7 +229,7 @@ void MixColumns(unsigned char* state)
 unsigned char* AES_Encrypt(unsigned char* plaintext, unsigned char* expanded_key)
 {
 	unsigned char state[16];
-	unsigned char* cipher = new unsigned char[17] {0};
+	unsigned char* cipher = new unsigned char[16] {0};
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -336,7 +336,7 @@ void DecSubBytes(unsigned char* state)
 unsigned char* AES_Decrypt(unsigned char* cipher, unsigned char* expanded_key)
 {
 	unsigned char state[16];
-	unsigned char* plaintext = new unsigned char[17] {0};
+	unsigned char* plaintext = new unsigned char[16] {0};
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -411,13 +411,14 @@ string HexToString(unsigned char* hex, int n)
 	return res;
 }
 
-unsigned char* Padding(unsigned char* plaintxt)
+int lenthAfterPadding = 0; // globel varible
+unsigned char* Padding(unsigned char* plaintxt, int plaintxtStrLenth)
 {
-    int originalLenth = strlen((const char*)plaintxt);
+    int originalLenth = plaintxtStrLenth;
     
     if(originalLenth % 16 != 0)
     {
-        int lenthAfterPadding = originalLenth + (16 - (originalLenth % 16));
+        lenthAfterPadding = originalLenth + (16 - (originalLenth % 16));
         unsigned char* temp = new unsigned char[lenthAfterPadding];
 
         for(int i = 0; i < lenthAfterPadding; i++)
@@ -425,13 +426,14 @@ unsigned char* Padding(unsigned char* plaintxt)
             if(i < originalLenth)
                 temp[i] = plaintxt[i];
             else
-                temp[i] = '0';
+                temp[i] = 0;
         }
 
         return temp;
     }
     else
     {
+		lenthAfterPadding = plaintxtStrLenth;
         return plaintxt;
     }
 }
@@ -439,6 +441,7 @@ unsigned char* Padding(unsigned char* plaintxt)
 int main()
 {
 	int choose;
+	cout << endl << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
 	cout << "需要加密(0)还是解密(1)? ";
 	cin >> choose;
 	cout << endl;
@@ -446,30 +449,44 @@ int main()
 	if(choose == 0)
 	{
 		// store content after encrypt
-		string total_enc = "";
+		string totalEnc = "";
 
 		// Variable
-    	unsigned char* plaintxt_char;
-    	unsigned char* key_char;
-    	string plaintxt_str;
-    	string key_str;
+    	// unsigned char* plaintxtChar;
+    	unsigned char* keyChar;
+    	string plaintxtStr;
+    	string keyStr;
 
 		// process plaintxt
     	cout << "请输入明文原文(如\"Hello Word!\"):" << endl;
-    	cin >> plaintxt_str;
-    	plaintxt_char = (unsigned char*)plaintxt_str.c_str();
+    	cin >> plaintxtStr;
+		int plaintxtStrLenth = plaintxtStr.length();
+		unsigned char* plaintxtChar = new unsigned char[plaintxtStrLenth] {0};
+		for(int i = 0; i < plaintxtStrLenth; i++)
+		{
+			plaintxtChar[i] = (unsigned char)plaintxtStr[i];
+		}
+    	//临时更改 plaintxtChar = (unsigned char*)plaintxtStr.c_str();
     	// padding
-    	unsigned char* paddingPlaintxt = Padding(plaintxt_char);
+    	unsigned char* paddingPlaintxt = Padding(plaintxtChar, plaintxtStrLenth);
 
 		// process key
-    	cout << "请输入加密密钥(十六进制字符串):" << endl;
-    	cin >> key_str;
-    	key_char = StringToHex(key_str, 32);
+		while(1)
+		{
+    		cout << "请输入加密密钥(十六进制字符串):" << endl;
+    		cin >> keyStr;
+			int keyStrLenth = keyStr.length();
+			if(keyStrLenth == 32)
+				break;
+			else
+				cout << "输入错误，重新输入" << endl;
+		}
+    	keyChar = StringToHex(keyStr, 32);
     	// KeyExpandsion
-    	unsigned char *expanded_key = ExpandKey(key_char);
+    	unsigned char *expandedKey = ExpandKey(keyChar);
 
     	// Encrypt
-    	int lenthAfterPadding = strlen((const char*)paddingPlaintxt);
+		cout << endl;
     	int timesToEnc = lenthAfterPadding / 16;
 
     	for(int i = 0; i < timesToEnc; i++)
@@ -481,55 +498,74 @@ int main()
 				eachPlaintxt[j] = paddingPlaintxt[j + i * 16];
 			}
 
-			unsigned char* cipher = AES_Encrypt(eachPlaintxt, expanded_key);
-        	total_enc += HexToString(cipher, 16);
+			unsigned char* cipher = AES_Encrypt(eachPlaintxt, expandedKey);
+        	totalEnc += HexToString(cipher, 16);
     	}
-		cout << "加密结果为：" << endl << total_enc << endl;
+		totalEnc += '\0';
+		cout << "加密结果为：" << endl << totalEnc << endl;
+		cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << "\n\n";
 	}
 
 	if(choose == 1)
 	{
 		// store content after decrypt
-		string total_dec = "";
-		
-		cout << "请输入密文原文(如\"2ca87ad3f507b20ffb71f8e9102ffc10\"):" << endl;
+		string totalDec = "";
 
 		// Variable
-    	unsigned char* cipher_char;
-    	unsigned char* key_char;
-    	string cipher_str;
-    	string key_str;
+    	unsigned char* cipherChar;
+    	unsigned char* keyChar;
+    	string cipherStr;
+    	string keyStr;
 
 		// process cipher
-		cin >> cipher_str;
-		cipher_char = StringToHex(cipher_str, 32);
-
+		int cipherStrLenth;
+		while(1)
+		{
+			cout << "请输入密文原文(如\"2ca87ad3f507b20ffb71f8e9102ffc10\"):" << endl;
+			cin >> cipherStr;
+			cipherStrLenth = cipherStr.length();
+			if(cipherStrLenth % 32 == 0)
+				break;
+			else
+				cout << "输入密文非16字节的倍数，重新输入" << endl;
+		}
+		cipherChar = StringToHex(cipherStr, cipherStrLenth);
 
 		// process key
-    	cout << "请输入加密密钥(十六进制字符串):" << endl;
-    	cin >> key_str;
-    	key_char = StringToHex(key_str, 32);
+		while(1)
+		{
+    		cout << "请输入加密密钥(十六进制字符串):" << endl;
+    		cin >> keyStr;
+			int keyStrLenth = keyStr.length();
+			if(keyStrLenth == 32)
+				break;
+			else
+				cout << "输入错误，重新输入" << endl;
+		}
+    	keyChar = StringToHex(keyStr, 32);
     	// KeyExpandsion
-    	unsigned char *expanded_key = ExpandKey(key_char);
+    	unsigned char *expandedKey = ExpandKey(keyChar);
 
 		// Decrypt
-		int cipherLenth = strlen((const char*)cipher_char);
-		int timesOfDec = cipherLenth / 16;
-		unsigned char* plaintxt;
-
-		for(int i = 0; i < timesOfDec; i++)
+		cout << endl;
+		int cipherCharLenth = cipherStrLenth / 2;
+		int timesToDec = cipherCharLenth / 16;
+		
+		for(int i = 0; i < timesToDec; i++)
 		{
 			unsigned char eachCipher[16];
 			for(int j = 0; j < 16; j++)
 			{
-				eachCipher[j] = cipher_char[j + i * 16];
+				eachCipher[j] = cipherChar[j + i * 16];
 			}
 
-			plaintxt = AES_Decrypt(eachCipher, expanded_key);
+			unsigned char* plaintxt = AES_Decrypt(eachCipher, expandedKey);
 			string plaintxt_temp = (char*)plaintxt;
-			total_dec += plaintxt_temp;
+			totalDec += plaintxt_temp;
 		}
-		cout << "解密结果为：" << endl << total_dec << endl;
+		totalDec += '\0';
+		cout << "解密结果为：" << endl << totalDec << endl;
+		cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << "\n\n";
 	}
 
     return 0;
