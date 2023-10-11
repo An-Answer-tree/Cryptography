@@ -288,7 +288,7 @@ void InverseMixColumns(unsigned char* state)
 	}
 }
 
-void ReverseShiftRows(unsigned char* state)
+void InverseShiftRows(unsigned char* state)
 {
 	unsigned char temp_state[16];
 
@@ -325,7 +325,7 @@ void ReverseShiftRows(unsigned char* state)
 	}
 }
 
-void ReverseSubBytes(unsigned char* state)
+void InverseSubBytes(unsigned char* state)
 {
 	for (int i = 0; i < 16; i++)
 	{
@@ -349,14 +349,14 @@ unsigned char* AES_Decrypt(unsigned char* cipher, unsigned char* expanded_key)
 
 	for (int i = 9; i >= 1; i--)
 	{
-		ReverseShiftRows(state);
-		ReverseSubBytes(state);
+		InverseShiftRows(state);
+		InverseSubBytes(state);
 		AddRoundKey(state, expanded_key+(16*i));
 		InverseMixColumns(state);
 	}
 
-	ReverseShiftRows(state);
-	ReverseSubBytes(state);
+	InverseShiftRows(state);
+	InverseSubBytes(state);
 	AddRoundKey(state, expanded_key);
 
 	for (int i = 0; i < 16; i++)
@@ -447,10 +447,10 @@ int main()
 	{
 		cin >> choose;
 		getchar();
-		if((choose == 0) || (choose == 1))
-			break;
-		else
+		if((choose != 0) && (choose != 1))
 			cout << "输入错误，重新输入0或1：";
+		else
+			break;
 	}
 	cout << endl;
 	
@@ -486,9 +486,9 @@ int main()
     	unsigned char* paddingPlaintxt = Padding(plaintxtChar, plaintxtStrLenth);
 
 		// process key
+		cout << "请输入加密密钥(十六进制字符串):" << endl;
 		while(1)
 		{
-    		cout << "请输入加密密钥(十六进制字符串):" << endl;
     		getline(cin, keyStr);
 			int keyStrLenth = keyStr.length();
 			if(keyStrLenth == 32)
@@ -533,10 +533,10 @@ int main()
     	string keyStr;
 
 		// process cipher
+		cout << "请输入密文原文(如\"2ca87ad3f507b20ffb71f8e9102ffc10\"):" << endl;
 		int cipherStrLenth;
 		while(1)
 		{
-			cout << "请输入密文原文(如\"2ca87ad3f507b20ffb71f8e9102ffc10\"):" << endl;
 			getline(cin, cipherStr);
 			cipherStrLenth = cipherStr.length();
 			if(cipherStrLenth % 32 == 0)
@@ -547,9 +547,9 @@ int main()
 		cipherChar = StringToHex(cipherStr, cipherStrLenth);
 
 		// process key
+		cout << "请输入加密密钥(十六进制字符串):" << endl;
 		while(1)
 		{
-    		cout << "请输入加密密钥(十六进制字符串):" << endl;
     		getline(cin,keyStr);
 			int keyStrLenth = keyStr.length();
 			if(keyStrLenth == 32)
