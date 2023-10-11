@@ -145,7 +145,7 @@ void AddRoundKey(unsigned char* state, unsigned char* round_key)
 	}
 }
 
-void EncSubBytes(unsigned char* state)
+void SubBytes(unsigned char* state)
 {
 	for (int i = 0; i < 16; i++)
 	{
@@ -153,7 +153,7 @@ void EncSubBytes(unsigned char* state)
 	}
 }
 
-void LeftShiftRows(unsigned char* state)
+void ShiftRows(unsigned char* state)
 {
 	unsigned char temp_state[16];
 
@@ -240,14 +240,14 @@ unsigned char* AES_Encrypt(unsigned char* plaintext, unsigned char* expanded_key
 
 	for (int i = 1; i <= 9; i++)
 	{
-		EncSubBytes(state);
-		LeftShiftRows(state);
+		SubBytes(state);
+		ShiftRows(state);
 		MixColumns(state);
 		AddRoundKey(state, expanded_key+(16*i));
 	}
 
-	EncSubBytes(state);
-	LeftShiftRows(state);
+	SubBytes(state);
+	ShiftRows(state);
 	AddRoundKey(state, expanded_key+160);
 
 	for (int i = 0; i < 16; i++)
@@ -288,7 +288,7 @@ void InverseMixColumns(unsigned char* state)
 	}
 }
 
-void RightShiftRows(unsigned char* state)
+void ReverseShiftRows(unsigned char* state)
 {
 	unsigned char temp_state[16];
 
@@ -325,7 +325,7 @@ void RightShiftRows(unsigned char* state)
 	}
 }
 
-void DecSubBytes(unsigned char* state)
+void ReverseSubBytes(unsigned char* state)
 {
 	for (int i = 0; i < 16; i++)
 	{
@@ -349,14 +349,14 @@ unsigned char* AES_Decrypt(unsigned char* cipher, unsigned char* expanded_key)
 
 	for (int i = 9; i >= 1; i--)
 	{
-		RightShiftRows(state);
-		DecSubBytes(state);
+		ReverseShiftRows(state);
+		ReverseSubBytes(state);
 		AddRoundKey(state, expanded_key+(16*i));
 		InverseMixColumns(state);
 	}
 
-	RightShiftRows(state);
-	DecSubBytes(state);
+	ReverseShiftRows(state);
+	ReverseSubBytes(state);
 	AddRoundKey(state, expanded_key);
 
 	for (int i = 0; i < 16; i++)
@@ -443,8 +443,15 @@ int main()
 	int choose;
 	cout << endl << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
 	cout << "需要加密(0)还是解密(1)? ";
-	cin >> choose;
-	getchar();
+	while(1)
+	{
+		cin >> choose;
+		getchar();
+		if((choose == 0) || (choose == 1))
+			break;
+		else
+			cout << "输入错误，重新输入0或1：";
+	}
 	cout << endl;
 	
 	if(choose == 0)
