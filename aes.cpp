@@ -102,7 +102,7 @@ void KeyExpansionCore(unsigned char* temp_word, unsigned char i)
 	temp_word[0] ^= rcon(i);  // other 3 bytes are XORed with 0
 }
 
-unsigned char* ExpandKey(unsigned char key[16])
+unsigned char* KeyExpansion(unsigned char key[16])
 {
 	unsigned char* expanded_key = new unsigned char[176];
 
@@ -498,7 +498,7 @@ int main()
 		}
     	keyChar = StringToHex(keyStr, 32);
     	// KeyExpandsion
-    	unsigned char *expandedKey = ExpandKey(keyChar);
+    	unsigned char *expandedKey = KeyExpansion(keyChar);
 
     	// Encrypt
 		cout << endl;
@@ -559,7 +559,7 @@ int main()
 		}
     	keyChar = StringToHex(keyStr, 32);
     	// KeyExpandsion
-    	unsigned char *expandedKey = ExpandKey(keyChar);
+    	unsigned char *expandedKey = KeyExpansion(keyChar);
 
 		// Decrypt
 		cout << endl;
