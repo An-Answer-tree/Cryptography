@@ -366,7 +366,7 @@ unsigned char* AES_Decrypt(unsigned char* cipher, unsigned char* expanded_key)
 	return plaintext;
 }
 
-unsigned char* StringToHex(string text, int n)
+unsigned char* HexStrToChar(string text, int n)
 {
 	unordered_map<char, int> mp;
     for(int i=0; i<10; i++)
@@ -389,7 +389,7 @@ unsigned char* StringToHex(string text, int n)
 	return res;
 }
 
-string HexToString(unsigned char* hex, int n)
+string CharToHexStr(unsigned char* hex, int n)
 {
 	unordered_map<char, int> mp;
     for(int i=0; i<10; i++)
@@ -496,7 +496,7 @@ int main()
 			else
 				cout << "输入错误，重新输入：";
 		}
-    	keyChar = StringToHex(keyStr, 32);
+    	keyChar = HexStrToChar(keyStr, 32);
     	// KeyExpandsion
     	unsigned char *expandedKey = KeyExpansion(keyChar);
 
@@ -514,7 +514,7 @@ int main()
 			}
 
 			unsigned char* cipher = AES_Encrypt(eachPlaintxt, expandedKey);
-        	totalEnc += HexToString(cipher, 16);
+        	totalEnc += CharToHexStr(cipher, 16);
     	}
 		totalEnc += '\0';
 		cout << "加密结果为：" << endl << totalEnc << endl;
@@ -544,7 +544,7 @@ int main()
 			else
 				cout << "输入密文非16字节的倍数，重新输入：";
 		}
-		cipherChar = StringToHex(cipherStr, cipherStrLenth);
+		cipherChar = HexStrToChar(cipherStr, cipherStrLenth);
 
 		// process key
 		cout << "请输入加密密钥(十六进制字符串):" << endl;
@@ -557,7 +557,7 @@ int main()
 			else
 				cout << "输入错误，重新输入：";
 		}
-    	keyChar = StringToHex(keyStr, 32);
+    	keyChar = HexStrToChar(keyStr, 32);
     	// KeyExpandsion
     	unsigned char *expandedKey = KeyExpansion(keyChar);
 
