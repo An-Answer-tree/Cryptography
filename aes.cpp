@@ -344,19 +344,19 @@ unsigned char* AES_Decrypt(unsigned char* cipher, unsigned char* expanded_key)
 	}
 
 	AddRoundKey(state, expanded_key+160);
-	RightShiftRows(state);
-	DecSubBytes(state);
 
 	int numberOfRounds = 9;
 
 	for (int i = 9; i >= 1; i--)
 	{
-		AddRoundKey(state, expanded_key+(16*i));
-		InverseMixColumns(state);
 		RightShiftRows(state);
 		DecSubBytes(state);
+		AddRoundKey(state, expanded_key+(16*i));
+		InverseMixColumns(state);
 	}
 
+	RightShiftRows(state);
+	DecSubBytes(state);
 	AddRoundKey(state, expanded_key);
 
 	for (int i = 0; i < 16; i++)
@@ -444,6 +444,7 @@ int main()
 	cout << endl << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
 	cout << "需要加密(0)还是解密(1)? ";
 	cin >> choose;
+	getchar();
 	cout << endl;
 	
 	if(choose == 0)
@@ -458,15 +459,22 @@ int main()
     	string keyStr;
 
 		// process plaintxt
+		int plaintxtStrLenth;
     	cout << "请输入明文原文(如\"Hello Word!\"):" << endl;
-    	cin >> plaintxtStr;
-		int plaintxtStrLenth = plaintxtStr.length();
+		while(1)
+		{
+			getline(cin, plaintxtStr);
+			plaintxtStrLenth = plaintxtStr.length();
+			if(plaintxtStrLenth != 0)
+				break;
+			else
+				cout << "未输入内容，重新输入：";
+		}
 		unsigned char* plaintxtChar = new unsigned char[plaintxtStrLenth] {0};
 		for(int i = 0; i < plaintxtStrLenth; i++)
 		{
 			plaintxtChar[i] = (unsigned char)plaintxtStr[i];
 		}
-    	//临时更改 plaintxtChar = (unsigned char*)plaintxtStr.c_str();
     	// padding
     	unsigned char* paddingPlaintxt = Padding(plaintxtChar, plaintxtStrLenth);
 
@@ -474,12 +482,12 @@ int main()
 		while(1)
 		{
     		cout << "请输入加密密钥(十六进制字符串):" << endl;
-    		cin >> keyStr;
+    		getline(cin, keyStr);
 			int keyStrLenth = keyStr.length();
 			if(keyStrLenth == 32)
 				break;
 			else
-				cout << "输入错误，重新输入" << endl;
+				cout << "输入错误，重新输入：";
 		}
     	keyChar = StringToHex(keyStr, 32);
     	// KeyExpandsion
@@ -522,12 +530,12 @@ int main()
 		while(1)
 		{
 			cout << "请输入密文原文(如\"2ca87ad3f507b20ffb71f8e9102ffc10\"):" << endl;
-			cin >> cipherStr;
+			getline(cin, cipherStr);
 			cipherStrLenth = cipherStr.length();
 			if(cipherStrLenth % 32 == 0)
 				break;
 			else
-				cout << "输入密文非16字节的倍数，重新输入" << endl;
+				cout << "输入密文非16字节的倍数，重新输入：";
 		}
 		cipherChar = StringToHex(cipherStr, cipherStrLenth);
 
@@ -535,12 +543,12 @@ int main()
 		while(1)
 		{
     		cout << "请输入加密密钥(十六进制字符串):" << endl;
-    		cin >> keyStr;
+    		getline(cin,keyStr);
 			int keyStrLenth = keyStr.length();
 			if(keyStrLenth == 32)
 				break;
 			else
-				cout << "输入错误，重新输入" << endl;
+				cout << "输入错误，重新输入：";
 		}
     	keyChar = StringToHex(keyStr, 32);
     	// KeyExpandsion
