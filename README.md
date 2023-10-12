@@ -1,4 +1,4 @@
-# AES-128对称加密算法
+# AES-128(Advanced Encryptioin Standard)
 cmd> aes.exe  
 ## 1. test of encryption
 input 0 to choose encrypt model 
