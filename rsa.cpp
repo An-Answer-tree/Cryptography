@@ -75,8 +75,6 @@ bool RSA::IsPrime(long long n)
             break;
         }
     }
-    // cout << "k = " << exponent_K << endl;
-    // cout << "m = " << m << endl;
 
     // do 10 times miller rabin primality test
     int count = 0;
@@ -89,6 +87,8 @@ bool RSA::IsPrime(long long n)
         // step3: calculate b0
         long long b0 = fmod((long long) pow(a, m), n);
         // cout << "b0 = " << b0 << endl;
+        if (b0 == 1 || b0 == n - 1)
+            continue;
 
         // step4: calculate b1, b2, b3, ...
         long long b1 = fmod((long long) pow(b0, 2), n);
@@ -204,7 +204,7 @@ int main()
         if (chooseGenerateKey == 1)    // Using Key Generation Algorithm
         {
             RSA instance;
-            cout << instance.IsPrime(13) << endl;
+            cout << instance.IsPrime(19) << endl;
  
         }
         else                          // Already Have A Key
