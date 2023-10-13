@@ -82,11 +82,17 @@ string CharToHexStr(unsigned char* hex, int n)
 int main()
 {
     cout << endl << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
-    cout << 
-    while(1)
-    {
-        
-    }
+    cout << "请选择RSA加密(0)还是解密(1)? ";
+	while(1)
+	{
+		cin >> choose;
+		getchar();
+		if((choose != 0) && (choose != 1))
+			cout << "输入错误，重新输入0或1：";
+		else
+			break;
+	}
+	cout << endl;
     unsigned char plaintxt[] = "this is the scentence that will be encrypted!";
 
     return 0;
