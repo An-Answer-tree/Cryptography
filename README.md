@@ -11,3 +11,22 @@ This project implements the RSA encryption/decryption algorithm using the GMP li
 ## GMP Installation
 
 Go to https://gmplib.org and download gmp  
+Following the official documention, using the methods below to install:  
+
+1. GMP has an autoconf/automake/libtool based configuration system. On a Unix-like system a basic build can be done with  
+```
+./configure
+make
+```
+2. Some self-tests can be run with  
+```
+make check
+```
+3. And you can install (under /usr/local by default) with  
+```
+make install
+```
+
+## Configure Compile Environment In VScode
+See the blog below:  
+https://blog.csdn.net/weixin_44338712/article/details/108614229
