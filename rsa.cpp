@@ -79,21 +79,43 @@ string CharToHexStr(unsigned char* hex, int n)
 	return res;
 }
 
-int main()
+bool SelectFunction()
 {
-    cout << endl << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
-    cout << "请选择RSA加密(0)还是解密(1)? ";
+    int choose;
 	while(1)
 	{
 		cin >> choose;
 		getchar();
-		if((choose != 0) && (choose != 1))
+		if((choose != '0') && (choose != '1'))
 			cout << "输入错误，重新输入0或1：";
 		else
 			break;
 	}
 	cout << endl;
-    unsigned char plaintxt[] = "this is the scentence that will be encrypted!";
+    if(choose == '0')
+        return 0;
+    else
+        return 1; 
+}
+int main()
+{
+    cout << endl << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
+    cout << "请选择RSA加密(0)还是解密(1)? ";
+    bool chooseEncOrDec = SelectFunction();
+
+    // AES_Encrypt
+    if(chooseEncOrDec == 0)
+    {
+        unsigned char plaintxt[] = "this is the scentence that will be encrypted!";
+    }
+
+    // AES_Decrypt
+    if(chooseEncOrDec == 1)
+    {
+
+    }
+    
+    cout << "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
 
     return 0;
 }
