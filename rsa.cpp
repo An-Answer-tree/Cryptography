@@ -64,7 +64,7 @@ bool RSA::IsPrime(long long n)
     long long m = 0;
     for( ; true; exponent_K++)
     {
-        long long a = fmod(n - 1, pow(2.0, exponent_K));//0
+        long long a = fmod(n - 1, (long long) pow(2.0, exponent_K));//0
         long long temp = (n - 1) / (long long) pow(2.0, exponent_K);//3
 
         if (a == 0)
@@ -99,23 +99,21 @@ bool RSA::IsPrime(long long n)
             continue;
         else    // calculate b2, b3, b4 until bn == +1 or (n-1)
         {
+            long long temp = b1;
             while(true)
             {
-                
+                long long bn = fmod((long long) pow(temp, 2), n);
+                if (bn == 1)    // must be composite number
+                    return false;
+                else if (bn == n - 1)    //maybe prime number
+                    break;
+                else    // calculate b2, b3, b4 until bn == +1 or (n-1)
+                    temp = bn;
             }
         }
-        
-
         count ++;
     }
-
-
-    
-
-    // step4: calculate b1 b2 b3 .... b
-    
-
-
+    return true;
 }
 
 
@@ -206,6 +204,7 @@ int main()
         if (chooseGenerateKey == 1)    // Using Key Generation Algorithm
         {
             RSA instance;
+            cout << instance.IsPrime(13) << endl;
  
         }
         else                          // Already Have A Key
