@@ -1,2 +1,10 @@
 
 .DS_Store
+rsa.dSYM/Contents/Info.plist
+rsa.dSYM/Contents/Resources/DWARF/rsa
+test.dSYM/Contents/Info.plist
+test.dSYM/Contents/Resources/DWARF/test
+.vscode/tasks.json
+.vscode/settings.json
+.vscode/settings.json
+*.json
