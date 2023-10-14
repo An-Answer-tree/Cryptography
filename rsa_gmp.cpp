@@ -5,47 +5,60 @@
 #include <cstring>
 #include <cstdlib>
 using namespace std;
- 
+
 #define KEY_LENGTH 2048  //Length of public key
 #define BASE 16    //Input and output digits
  
 struct key_pair
 {
-  char * n;
+char * n;
   char * d;
   int e;
 };
-void writefile(char *p,string filename); 
+
+void writefile(char *p,string filename){
+  FILE *fp=fopen(filename.c_str(),"w+");
+  if(fp==NULL){
+    printf("Failed to open the file!");
+    exit(-1);
+  }
+  if(fputs(p,fp)==EOF)printf("Failed to open the file!");
+  fclose(fp);
+}
+
 //Generate two large prime numbers
 mpz_t * gen_primes()
-{										
+{	
+  // 
   gmp_randstate_t grt;				
   gmp_randinit_default(grt);	
   gmp_randseed_ui(grt, time(NULL));
 	
-  mpz_t key_p, key_q;
-  mpz_init(key_p);
-  mpz_init(key_q);
+  // init p and q
+  mpz_t rsa_p, rsa_q;
+  mpz_init(rsa_p);
+  mpz_init(rsa_q);
  
-  mpz_urandomb(key_p, grt, KEY_LENGTH / 2);		
-  mpz_urandomb(key_q, grt, KEY_LENGTH / 2);	//Random Generation of Two Large Integers
+  // Random Generation of Two Large Integers
+  mpz_urandomb(rsa_p, grt, KEY_LENGTH / 2);		
+  mpz_urandomb(rsa_q, grt, KEY_LENGTH / 2);	
  
   mpz_t * result = new mpz_t[2];
   mpz_init(result[0]);
   mpz_init(result[1]);
  
-  mpz_nextprime(result[0], key_p);  //Using the Prime Generation Function of GMP
-  mpz_nextprime(result[1], key_q);
+  mpz_nextprime(result[0], rsa_p);  //Using the Prime Generation Function of GMP
+  mpz_nextprime(result[1], rsa_q);
   char * buf_p = new char[KEY_LENGTH + 10];
   char * buf_q = new char[KEY_LENGTH + 10];
 
-  mpz_get_str(buf_p, BASE, key_p);
+  mpz_get_str(buf_p, BASE, rsa_p);
   writefile(buf_p,"p.txt");
-  mpz_get_str(buf_q, BASE, key_q);
+  mpz_get_str(buf_q, BASE, rsa_q);
   writefile(buf_q,"q.txt");
  
-  mpz_clear(key_p);
-  mpz_clear(key_q);
+  mpz_clear(rsa_p);
+  mpz_clear(rsa_q);
  
   return result;	
 }
@@ -152,15 +165,7 @@ void readfile(char str[], string filename){
   fclose(fp);
 }
 
-void writefile(char *p,string filename){
-  FILE *fp=fopen(filename.c_str(),"w+");
-  if(fp==NULL){
-    printf("Failed to open the file!");
-    exit(-1);
-  }
-  if(fputs(p,fp)==EOF)printf("Failed to open the file!");
-  fclose(fp);
-}
+
 
 void write_e(string filename){
   FILE *fp=fopen(filename.c_str(),"w+");
