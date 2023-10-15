@@ -12,7 +12,7 @@ RSA::RSA()
     nChar = NULL;
     eChar = NULL;
     dChar = NULL;
-    plaintext = NULL;
+    hexPlaintext = NULL;
     cipher = NULL;
 }
 
@@ -94,89 +94,41 @@ void RSA::KeyGeneration()
     WriteCharToFile(nChar, "key_n.txt");
 }
 
-char* RSA::HexStrToChar(string text, int n)
-{
-	unordered_map<char, int> mp;
-    for(int i=0; i<10; i++)
-    {
-        mp[i + '0'] = i;
-    }
-    for(int i=0; i<6; i++)
-    {
-        mp[i + 'a'] = i + 10;
-    }
-	char* res = new char[n/2 + 1] {0};
-	for(int i=0; i<n/2; i++)
-	{
-		char c1 = text.at(i*2);
-		char c2 = text.at(i*2+1);
-		int b1 = mp[c1];
-		int b2 = mp[c2];
-		res[i] = 16*b1 + b2;
-	}
-	return res;
-}
-
-string RSA::CharToHexStr(char* hex, int n)
-{
-	unordered_map<char, int> mp;
-    for(int i=0; i<10; i++)
-    {
-        mp[i] = i + '0';
-    }
-    for(int i=0; i<6; i++)
-    {
-        mp[i + 10] = i + 'a';
-    }
-	string res;
-	for(int i=0; i<n; i++)
-	{
-		int x = hex[i];
-        int b1 = mp[x/16];
-        int b2 = mp[x%16];
-        res += string(1, b1) + string(1, b2);
-	}
-	return res;
-}
-
 void RSA::AddPlainStrToHexPlaintext(string plainStr)
 {
     unordered_map<int, char> mp;
     for (int i = 0; i < 10; i++)
-    {
         mp[i] = '0' + i;
-    }
     for (int i = 0; i < 6; i++)
-    {
         mp[i + 10] = 'a' + i;
-    }
 
     int plainStrLength = plainStr.length();
-    plaintext = new char[2 * plainStrLength + 1] {0};
+    plaintext = new char[plainStrLength + 1] {0};
+    memcpy(plaintext, plainStr.c_str(), plainStrLength);
+
+    hexPlaintext = new char[2 * plainStrLength + 1] {0};
     for (int i = 0; i < plainStrLength; i++)
     {
         int charNum = (int) plainStr[i];
         char first = mp[charNum / BASE];
         char second = mp[charNum % BASE];
-        plaintext[2 * i] = first;
-        plaintext[2 * i + 1] = second;
+        hexPlaintext[2 * i] = first;
+        hexPlaintext[2 * i + 1] = second;
     }
 }
 
 void RSA::AddHexStrToCipher(string cipherStr)
 {
     int cipherStrLength = cipherStr.length();
-    cipher = new char[cipherStrLength / 2 + 1] {0};
-    char* temp = HexStrToChar(cipherStr, cipherStrLength);
-    memcpy(cipher, temp, cipherStrLength / 2);
-    delete[] temp;
+    cipher = new char[cipherStrLength + 1] {0};
+    memcpy(cipher, cipherStr.c_str(), cipherStrLength);
 }
 
 void RSA::AddHexStrToKey(string nStr, string eStr, string dStr)
 {
     // store n to nChar
     int nStrLength = nStr.length();
-    nChar = new char[nStrLength + 1];
+    nChar = new char[nStrLength + 1] {0};
     memcpy(nChar, nStr.c_str(), nStrLength);
 
     // store n to mpz_t n
@@ -186,7 +138,7 @@ void RSA::AddHexStrToKey(string nStr, string eStr, string dStr)
     if (eStr != "")
     {
         int eStrLength = eStr.length();
-        eChar = new char[eStrLength + 1];
+        eChar = new char[eStrLength + 1] {0};
         memcpy(eChar, eStr.c_str(), eStrLength);
 
         mpz_set_str(e, eChar, BASE);
@@ -196,7 +148,7 @@ void RSA::AddHexStrToKey(string nStr, string eStr, string dStr)
     if (dStr != "")
     {
         int dStrLength = dStr.length();
-        dChar = new char[dStrLength + 1];
+        dChar = new char[dStrLength + 1] {0};
         memcpy(dChar, dStr.c_str(), dStrLength);
 
         mpz_set_str(d, dChar, BASE);
@@ -209,10 +161,10 @@ void RSA::RSA_Encrypt()
     mpz_init(mpzMessage);
     mpz_init(mpzCipher);
 
-    mpz_set_str(mpzMessage, plaintext, BASE);
+    mpz_set_str(mpzMessage, hexPlaintext, BASE);
     mpz_powm(mpzCipher, mpzMessage, e, n);
 
-    cipher = new char[(KEY_LENGTH / 4) + 5];
+    cipher = new char[(KEY_LENGTH / 4) + 5] {0};
     mpz_get_str(cipher, BASE, mpzCipher);
     WriteCharToFile(cipher, "cipher_after_encrypt.txt");
 
@@ -222,7 +174,32 @@ void RSA::RSA_Encrypt()
 
 void RSA::RSA_Decrypt()
 {
+    mpz_t mpzPlaintext, mpzCipher;
+    mpz_init(mpzPlaintext);
+    mpz_init(mpzCipher);
+
+    mpz_set_str(mpzCipher, cipher, BASE);
+    mpz_powm(mpzPlaintext, mpzCipher, d, n);
+
+    hexPlaintext = new char[(KEY_LENGTH / 4) + 6] {0};
+    mpz_get_str(hexPlaintext, BASE, mpzPlaintext);
     
+    // convert Hex plainext to char*
+    unordered_map<char, int> mp;
+    for (int i = 0; i < 10; i++)
+        mp['0' + i] = i;
+    for (int i = 0; i < 6; i++)
+        mp['a' + i] = i + 10;
+
+    plaintext = new char[(KEY_LENGTH / 4) + 6] {0};
+    for (int i = 0; i < ((KEY_LENGTH / 4) + 6) / 2; i++)
+    {
+        int first = mp[hexPlaintext[2 * i]];
+        int second = mp[hexPlaintext[2 * i + 1]];
+        plaintext[i] = (char) (16 * first + second);
+    }
+
+    WriteCharToFile(plaintext, "plaintext_after_decrypt.txt");
 }
 
 RSA::~RSA()
@@ -246,6 +223,8 @@ RSA::~RSA()
         delete[] eChar;
     if (dChar != NULL)
         delete[] dChar;
+    if (hexPlaintext != NULL)
+        delete[] hexPlaintext;
     if (plaintext != NULL)
         delete[] plaintext;
     if (cipher != NULL)

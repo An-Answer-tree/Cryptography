@@ -25,6 +25,7 @@ class RSA
     char* dChar;
 
     // plaintext and cipher
+    char* hexPlaintext;
     char* plaintext;
     char* cipher;
 
@@ -38,12 +39,6 @@ class RSA
 
     // Generate Key Pair (e, n) and (d, n)
     void KeyGeneration();
-
-    // convert hex string to char*
-    char* HexStrToChar(string text, int n);
-
-    // convert char* to hex string
-    string CharToHexStr(char* hex, int n);
 
     // Store Plaintext to RSA::plaintext
     void AddPlainStrToHexPlaintext(string plainStr);
