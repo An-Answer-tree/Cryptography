@@ -111,7 +111,7 @@ int main()
         // cout << dStr;
         cout << endl;
 
-        cout << "请输入加密密钥n(16进制): ";
+        cout << "请输入解密密钥n(16进制): ";
         string nStr;
         getline(cin, nStr);
         // nStr = "921e00a6fe9b65ca59d6ac628ede3ddc69c3325287506a12127f27f07d67fcb845dbbb928930f21870c7ae72b5791bc3d8770038f480f3c62f7681e7277a686ed3ab1a49ae8d13cc728ef2de8f17810f928363ae8a868f91e3b2102d6e56af0c34c9cc78c2116cf6dc6318bfa808eede4cce0451b5c64ca5d4053ddbe942877f3e83a9d9eb7cf5c086dd83957d0bdba0d77d67a84daf7944f86acee04985a5cb055d15a57c886a0a3ccbc1dd714d5e312202da52c99f678c486a1bb11a388a256fbb4c637d8b6b33ebcbb331a32fa9d7870a11fd797a9e4cf7a63c027d78d0968e94367a9a6cdf822fc1c12e03f5d9f4163490b372fd1082aaa6a3c6bac7fb7";
