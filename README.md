@@ -30,13 +30,14 @@ make install
 ## CMake Build
 &emsp;&emsp;It depends on `CMake` to compile cpp file to executable file when having a complex directory structure.  
 &emsp;&emsp;Directory structure of look like:  
-    ├── ..
-    ├── include
-    │   ├── RSA_Class.hpp
-    ├── src
-    │   ├── RSA_Class.cpp
-    │   ├── rsa.cpp
-    ├── CMakeLists.txt
+.
+├── CMakeLists.txt
+├── README.md
+├── include
+│   └── RSA_Class.hpp
+└── src
+    ├── RSA_Class.cpp
+    └── rsa.cpp
 
   
 &emsp;&emsp;Before build executable file, you need to modify `CMakeLists.txt`:  
