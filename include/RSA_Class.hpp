@@ -25,6 +25,8 @@ class RSA
     char* plaintext;
     char* cipher;
 
+    RSA();
+
     // Store Content to File
     void WriteCharToFile(char* str, string fileName);
 
@@ -34,11 +36,17 @@ class RSA
     // Generate Key Pair (e, n) and (d, n)
     void KeyGeneration();
 
+    // convert hex string to char*
+    char* HexStrToChar(string text, int n);
+
+    // convert char* to hex string
+    string CharToHexStr(char* hex, int n);
+
     // Store Plaintext to RSA::plaintext
-    void AddPlainStrToPlaintext(string plainStr);
+    void AddPlainStrToHexPlaintext(string plainStr);
 
     // Store Cipher to RSA:: cipher
-    void AddHexStrToCipher();
+    void AddHexStrToCipher(string cipherStr);
 
     // RSA Encrypt Function
     void RSA_Encrypt();
