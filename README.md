@@ -30,6 +30,7 @@ make install
 ## CMake Build
 &emsp;&emsp;It depends on `CMake` to compile cpp file to executable file when having a complex directory structure.  
 &emsp;&emsp;Directory structure of look like:  
+```
 .
 ├── CMakeLists.txt
 ├── README.md
@@ -38,8 +39,7 @@ make install
 └── src
     ├── RSA_Class.cpp
     └── rsa.cpp
-
-  
+```
 &emsp;&emsp;Before build executable file, you need to modify `CMakeLists.txt`:  
 ```
 # input your cmake version
