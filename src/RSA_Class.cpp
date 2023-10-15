@@ -6,6 +6,14 @@ RSA::RSA()
     mpz_init(phi_n);
     mpz_init(e);
     mpz_init(d);
+    mpz_init(p);
+    mpz_init(q);
+
+    nChar = NULL;
+    eChar = NULL;
+    dChar = NULL;
+    plaintext = NULL;
+    cipher = NULL;
 }
 
 void RSA::WriteCharToFile(char* str, string fileName)
@@ -31,10 +39,6 @@ void RSA::GenerateLargePrime()
     // Random Generation of Two Large Integers
     mpz_urandomb(tempP, grt, KEY_LENGTH / 2);  // tempP now is not a prime
     mpz_urandomb(tempQ, grt, KEY_LENGTH / 2);  // tempQ now is not a prime
-
-    // init p and q
-    mpz_init(p);
-    mpz_init(q);
  
     //Using the Prime Generation Function of GMP to calculate the prime after the second parameter
     mpz_nextprime(p, tempP);  // RSA::p now is a prime
@@ -77,9 +81,9 @@ void RSA::KeyGeneration()
 
     // save (e, n) and (d, n) to file
     // new char[]
-    char* eChar = new char[20];
-    char* dChar = new char[(KEY_LENGTH / 4) + 5];
-    char* nChar = new char[(KEY_LENGTH / 4) + 5];
+    eChar = new char[20] {0};
+    dChar = new char[(KEY_LENGTH / 4) + 5] {0};
+    nChar = new char[(KEY_LENGTH / 4) + 5] {0};
     // covert mpz_t to HEX char*
     mpz_get_str(eChar, BASE, e);
     mpz_get_str(dChar, BASE, d);
@@ -88,11 +92,6 @@ void RSA::KeyGeneration()
     WriteCharToFile(eChar, "key_e.txt");
     WriteCharToFile(dChar, "key_d.txt");
     WriteCharToFile(nChar, "key_n.txt");
-
-    // free the memery
-    delete[] eChar;
-    delete[] dChar;
-    delete[] nChar;
 }
 
 char* RSA::HexStrToChar(string text, int n)
@@ -140,7 +139,6 @@ string RSA::CharToHexStr(char* hex, int n)
 	return res;
 }
 
-
 void RSA::AddPlainStrToHexPlaintext(string plainStr)
 {
     unordered_map<int, char> mp;
@@ -174,6 +172,37 @@ void RSA::AddHexStrToCipher(string cipherStr)
     delete[] temp;
 }
 
+void RSA::AddHexStrToKey(string nStr, string eStr, string dStr)
+{
+    // store n to nChar
+    int nStrLength = nStr.length();
+    nChar = new char[nStrLength + 1];
+    memcpy(nChar, nStr.c_str(), nStrLength);
+
+    // store n to mpz_t n
+    mpz_set_str(n, nChar, BASE);
+
+    // store e to eChar and mpz_t e
+    if (eStr != "")
+    {
+        int eStrLength = eStr.length();
+        eChar = new char[eStrLength + 1];
+        memcpy(eChar, eStr.c_str(), eStrLength);
+
+        mpz_set_str(e, eChar, BASE);
+    }
+
+    // store d to dChar and mpz_t d
+    if (dStr != "")
+    {
+        int dStrLength = dStr.length();
+        dChar = new char[dStrLength + 1];
+        memcpy(dChar, dStr.c_str(), dStrLength);
+
+        mpz_set_str(d, dChar, BASE);
+    }
+}
+
 void RSA::RSA_Encrypt()
 {
     mpz_t mpzMessage, mpzCipher;
@@ -198,10 +227,27 @@ void RSA::RSA_Decrypt()
 
 RSA::~RSA()
 {
-    mpz_clear(p);
-    mpz_clear(q);
-    mpz_clear(n);
-    mpz_clear(phi_n);
-    mpz_clear(e);
-    mpz_clear(d);
+    if (n->_mp_d != NULL)
+        mpz_clear(n);
+    if (phi_n->_mp_d != NULL)
+        mpz_clear(phi_n);
+    if (e->_mp_d != NULL)
+        mpz_clear(e);
+    if (d->_mp_d != NULL)
+        mpz_clear(d);
+    if (p->_mp_d != NULL)
+        mpz_clear(p);
+    if (q->_mp_d != NULL)
+        mpz_clear(q);
+    
+    if (nChar != NULL)
+        delete[] nChar;
+    if (eChar != NULL)
+        delete[] eChar;
+    if (dChar != NULL)
+        delete[] dChar;
+    if (plaintext != NULL)
+        delete[] plaintext;
+    if (cipher != NULL)
+        delete[] cipher;
 }

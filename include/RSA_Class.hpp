@@ -20,6 +20,9 @@ class RSA
     mpz_t phi_n;
     mpz_t e;
     mpz_t d;
+    char* nChar;
+    char* eChar;
+    char* dChar;
 
     // plaintext and cipher
     char* plaintext;
@@ -47,6 +50,9 @@ class RSA
 
     // Store Cipher to RSA:: cipher
     void AddHexStrToCipher(string cipherStr);
+
+    // Store key to RSA::e, RSA::d, RSA::n
+    void AddHexStrToKey(string nStr, string eStr="", string dStr="");
 
     // RSA Encrypt Function
     void RSA_Encrypt();
