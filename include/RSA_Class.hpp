@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string.h>
 #include <gmp.h>
+#include <unordered_map>
 using namespace std;
 
 #define KEY_LENGTH 2048  //Length of public key
