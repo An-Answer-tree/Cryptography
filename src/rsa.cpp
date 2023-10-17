@@ -1,4 +1,4 @@
-#include "RSA_Class.hpp"
+#include "../include/RSA_Class.hpp"
 
 int main()
 {
