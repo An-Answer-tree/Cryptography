@@ -35,36 +35,56 @@ def ToDigits(n, base):
         n  = n // base
     return digits
 
-def grouping(list,pairn): 
+def GroupList(listBeforeGrouped,numOfElements): 
     """It will partition the ascii values into groups
 
     Args:
-        list (_type_): _description_
-        pairn (_type_): _description_
+        list (list): list before grouping. exp:[97, 98, 99, 100]
+        pairn (int): the number of elements every group has. exp:2
+
+    Returns:
+        groupedList: like [[97, 98], [99, 10]]
+    """    
+    groupedList = []
+    count = 0
+    partList = []
+    for i in range(len(listBeforeGrouped)):
+        partList.append(listBeforeGrouped[i])
+        count = count+1
+        if count==numOfElements :
+            groupedList.append(partList)
+            count,partList = 0,[]
+        elif i==len(listBeforeGrouped)-1:
+            groupedList.append(partList)
+    return groupedList
+
+def ConvertOtherBaseToDec(digitsList, base):
+    """Convert other base digits stored by list to Dec int
+
+    Args:
+        digits (1D-list): 
+        b (_type_): _description_
 
     Returns:
         _type_: _description_
     """    
-    groupsList,n,l = [],0,[]
-    for i in range(len(list)):
-        l.append(list[i])
-        n = n+1
-        if n==pairn :
-            groupsList.append(l)
-            n,l = 0,[]
-        elif i==len(list)-1:
-            groupsList.append(l)
-    return groupsList
-def fromDigits(digits, b):
-    """Compute the number given by digits in base b."""
     n = 0
-    for d in digits:
-        n = b * n + d
+    for d in digitsList:
+        n = base * n + d
     return n
-def bigInteger(list): #converts each group of ascii value into big Integer.
+
+def bigInteger(list): 
+    """_summary_
+
+    Args:
+        list (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """    #converts each group of ascii value into big Integer.
     bigI = []
     for i in list:
-        bigI.append(fromDigits(i,65536))
+        bigI.append(ConvertOtherBaseToDec(i,65536))
     if len(bigI)%2!=0:
         bigI.append(32)
     return bigI
