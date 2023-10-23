@@ -22,6 +22,7 @@ if __name__ == "__main__":
         if choice == '1' or choice == '0':
             break
     
+    # Key Generation
     if choice == '1':
         # Generate Private Key
         while 1:
@@ -43,7 +44,8 @@ if __name__ == "__main__":
             file.write("public key: ")
             file.write(publicKeyStr)
             file.write('\n')
-            
+    
+    # Encryption or Decryption
     if choice == '0':
         # choose encryption or decryption
         while True:
@@ -51,15 +53,58 @@ if __name__ == "__main__":
             if choice2 == '1' or choice2 == '0':
                 break
         
+        # Encryption
         if choice2 == '1':
+            while 1:
+                k = random.getrandbits(256)
+                if 1 < k < n:
+                    break
+            print('加密随机数k : ', k)
+            
             plaintext = input('请输入需要加密的明文字符串: ')
+            publicKeyX = input('请输入公钥的横坐标: ')
+            publicKeyY = input('请输入公钥的纵坐标: ')
+            print()
+            publicKey = (int(publicKeyX), int(publicKeyY))
+            
             asciiList = operations.TxtToAsciiList(plaintext)
-            print('asciiList: ', asciiList)
+            pairLength = len(operations.ToDigits(p,65536)) - 1
+            groupList = operations.GroupList(asciiList,pairLength)
+            bigInt = operations.bigInteger(groupList)
+            cipherPair = operations.GroupList(bigInt,2)
+            C1 = ecmath.double_and_add(k,G,p,a)
+            print('密文C1: ', C1)
             
+            temp = ecmath.double_and_add(k,publicKey,p,a)
+            C2 = []                                
+            for i in cipherPair:
+                C2.append(ecmath.ecc_add(i[0],i[1],temp[0],temp[1],p,a))
+            print('密文C2: ', C2)
             
-        
-        if choice2 == '2':
-            pass
+            with open("Cipher_After_Encrypt.txt", mode='w') as file:
+                print('密文C1: ', C1, '\n密文C2: ', C2, file=file)
+            
+        # Decryption
+        if choice2 == '0':
+            C1 = int(input('请输入密文C1: '))
+            
+            C2 = int(input('请输入密文C2: '))
+            privateKey = int(input('请输入私钥: '))
+            
+            temp2 = ecmath.double_and_add(privateKey,C1,p,a)
+            Cipher  = []
+            for i in C2:
+                Cipher.append(ecmath.ecc_add(i[0],i[1],temp2[0],-temp2[1],p,a))
+            sml_Int = []
+            for i in Cipher:
+                for j in i:
+                    sml_Int.append(operations.ToDigits(j,65536))
+            Dicipher = ""
+            for i in sml_Int:
+                for j in i:
+                    Dicipher = Dicipher + chr(j)
+            print("decrypted msg : " + str(Dicipher))
+            
             
             
     print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++', end='\n\n')

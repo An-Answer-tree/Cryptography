@@ -31,7 +31,7 @@ if __name__ == "__main__":
     print('cipherPair: ', cipherPair)
 
     C1 = ecmath.double_and_add(k,G,p,a)    # first half of ciphertxt
-    print('cx1: ', C1)
+    print('C1: ', C1)
 
     publicKey = ecmath.double_and_add(privateKey,G,p,a)
     print('publicKey: ', publicKey)
