@@ -63,10 +63,10 @@ def ConvertOtherBaseToDec(digitsList, base):
 
     Args:
         digits (1D-list): 
-        b (_type_): _description_
+        base (): base
 
     Returns:
-        _type_: _description_
+        n (int): the digits
     """    
     n = 0
     for d in digitsList:
