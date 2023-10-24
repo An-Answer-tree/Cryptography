@@ -37,7 +37,7 @@ if __name__ == "__main__":
         print('publicKey is : ', publicKey)
         
         # store secert key to file
-        with open("./Secret_Key.txt", mode='w') as file:
+        with open("./Secret_Key.txt", mode='w', encoding="utf-8") as file:
             print('私钥为:', str(privateKey), '\n公钥为:', publicKeyStr, file=file)
     
     # Encryption or Decryption
@@ -74,7 +74,7 @@ if __name__ == "__main__":
                 C2.append(ecmath.ecc_add(i[0],i[1],temp[0],temp[1],p,a))
             print('密文C2: ', C2)
             
-            with open("Cipher_After_Encrypt.txt", mode='w') as file:
+            with open("Cipher_After_Encrypt.txt", mode='w', encoding="utf-8") as file:
                 print('密文C1:', C1, '\n密文C2:', C2, file=file)
             
         # Decryption
@@ -96,7 +96,7 @@ if __name__ == "__main__":
                 for j in i:
                     Dicipher = Dicipher + chr(j)
             
-            with open("Plaintext_After_Decryption.txt", mode='w') as file:
+            with open("Plaintext_After_Decryption.txt", mode='w', encoding="utf-8") as file:
                 print('解密后的明文为:', str(Dicipher), file=file)
             print("解密后的明文为 : " + str(Dicipher))
     print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++', end='\n\n')
