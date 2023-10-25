@@ -7,6 +7,3 @@ This Python program demonstrates the implementation of the ElGamal encryption an
 ## Requirements
 
 - Python 3.x
-
-## Example
-
