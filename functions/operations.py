@@ -74,14 +74,14 @@ def ConvertOtherBaseToDec(digitsList, base):
     return n
 
 def bigInteger(list): 
-    """_summary_
+    """converts each group of ascii value into big Integer.
 
     Args:
-        list (_type_): _description_
+        list (list): 2D list
 
     Returns:
-        _type_: _description_
-    """    #converts each group of ascii value into big Integer.
+        bigI (list): list has even number big integer
+    """ 
     bigI = []
     for i in list:
         bigI.append(ConvertOtherBaseToDec(i,65536))

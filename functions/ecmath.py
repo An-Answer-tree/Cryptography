@@ -12,6 +12,7 @@ def extended_gcd(aa, bb):
        x, lastx = lastx - quotient*x, x
        y, lasty = lasty - quotient*y, y
    return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
+
 # calculate `modular inverse`
 def modinv(a, m):
    g, x, y = extended_gcd(a, m)
@@ -25,6 +26,7 @@ def ecc_double(x1, y1, p, a):
    x3 = (s**2 - x1 - x1)%p
    y3 = (s*(x1-x3) - y1)%p
    return (x3, y3)
+
 # add function
 def ecc_add(x1, y1, x2, y2, p, a):
    s = 0
@@ -35,6 +37,8 @@ def ecc_add(x1, y1, x2, y2, p, a):
    x3 = (s**2 - x1 - x2)%p
    y3 = (s*(x1 - x3) - y1)%p
    return (x3, y3)
+
+# ECC Multiplication
 def double_and_add(multi, generator, p, a):
    (x3, y3)=(0, 0)
    (x1, y1) = generator
