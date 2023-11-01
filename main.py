@@ -84,20 +84,20 @@ if __name__ == "__main__":
             privateKey = int(input('请输入私钥: '))
             
             temp2 = ecmath.double_and_add(privateKey,C1,p,a)
-            Cipher  = []
+            plaintext  = []
             for i in C2:
-                Cipher.append(ecmath.ecc_add(i[0],i[1],temp2[0],-temp2[1],p,a))
+                plaintext.append(ecmath.ecc_add(i[0],i[1],temp2[0],-temp2[1],p,a))
             sml_Int = []
-            for i in Cipher:
+            for i in plaintext:
                 for j in i:
                     sml_Int.append(operations.ToDigits(j,65536))
-            Dicipher = ""
+            plain = ""
             for i in sml_Int:
                 for j in i:
-                    Dicipher = Dicipher + chr(j)
+                    plain = plain + chr(j)
             
             with open("Plaintext_After_Decryption.txt", mode='w', encoding="utf-8") as file:
-                print('解密后的明文为:', str(Dicipher), file=file)
-            print("解密后的明文为 : " + str(Dicipher))
+                print('解密后的明文为:', str(plain), file=file)
+            print("解密后的明文为 : " + str(plain))
     print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++', end='\n\n')
     input("按下回车键以退出...")
