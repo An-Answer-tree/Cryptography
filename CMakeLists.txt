@@ -10,5 +10,5 @@ set(CMAKE_CXX_STANDARD 20)
 # Input path of .h file needed to be included
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Generate executable file with main.cpp
-add_executable(${PROJECT_NAME} src/main.cpp)
+# Generate executable file with main.cpp sha512.cpp
+add_executable(${PROJECT_NAME} src/main.cpp src/sha512.cpp)
