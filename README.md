@@ -1,6 +1,6 @@
 # SHA-512 Implementation in C++
 
-## reset CMakeList.txt
+## Reset CMakeList.txt before build
 ```
 # you need to change VERSION XXX to your cmake version(like VERSION 3.27.1)
 cmake_minimum_required(VERSION XXX)
@@ -19,7 +19,7 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 
 ```
 
-## how to use
+## How to build
 
 - cd /ProjectDir/
 - mkdir build
@@ -28,6 +28,6 @@ add_executable(${PROJECT_NAME} src/main.cpp)
 - make
 - ./sha512
 
-## instruction
+## Instruction
 
 When running the program, you can input 'text'. Then it will output the hash of the 'text'.
