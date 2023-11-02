@@ -1,5 +1,17 @@
 # SHA-512 Implementation in C++
 
+## Folder structure
+```
+.
+├── CMakeLists.txt
+├── README.md
+├── include
+│   └── sha512.hpp
+└── src
+    └── main.cpp
+    
+```
+
 ## Reset CMakeList.txt before build
 ```
 # you need to change VERSION XXX to your cmake version(like VERSION 3.27.1)
