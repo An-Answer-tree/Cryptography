@@ -177,8 +177,7 @@ int main()
     cout << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
     cout << "请输入需要求hash的字符串: ";
     string inputStr;
-    cin >> inputStr;
-    getchar();
+    getline(cin, inputStr);
     int inputStrLen = inputStr.length();
     unsigned char* input = new unsigned char[inputStrLen + 1] {0};
     input = (unsigned char*)inputStr.c_str();
