@@ -1,0 +1,3 @@
+cmake_minimum_required(VERSION 3.28.0)
+project(aes)
+add_executable({PROJECT_NAME} aes.cpp)
