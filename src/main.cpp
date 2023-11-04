@@ -442,13 +442,13 @@ int main()
 {
 	int choose;
 	cout << endl << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << endl;
-	cout << "éœ€è¦åŠ å¯†(0)è¿˜æ˜¯è§£å¯†(1)? ";
+	cout << "ÐèÒª¼ÓÃÜ(0)»¹ÊÇ½âÃÜ(1)? ";
 	while(1)
 	{
 		cin >> choose;
 		getchar();
 		if((choose != 0) && (choose != 1))
-			cout << "è¾“å…¥é”™è¯¯ï¼Œé‡æ–°è¾“å…¥0æˆ–1ï¼š";
+			cout << "ÊäÈë´íÎó£¬ÖØÐÂÊäÈë0»ò1£º";
 		else
 			break;
 	}
@@ -467,7 +467,7 @@ int main()
 
 		// process plaintxt
 		int plaintxtStrLenth;
-    	cout << "è¯·è¾“å…¥æ˜Žæ–‡åŽŸæ–‡(å¦‚\"Hello Word!\"):" << endl;
+    	cout << "ÇëÊäÈëÃ÷ÎÄÔ­ÎÄ(Èç\"Hello Word!\"):" << endl;
 		while(1)
 		{
 			getline(cin, plaintxtStr);
@@ -475,7 +475,7 @@ int main()
 			if(plaintxtStrLenth != 0)
 				break;
 			else
-				cout << "æœªè¾“å…¥å†…å®¹ï¼Œé‡æ–°è¾“å…¥ï¼š";
+				cout << "Î´ÊäÈëÄÚÈÝ£¬ÖØÐÂÊäÈë£º";
 		}
 		unsigned char* plaintxtChar = new unsigned char[plaintxtStrLenth] {0};
 		for(int i = 0; i < plaintxtStrLenth; i++)
@@ -486,7 +486,7 @@ int main()
     	unsigned char* paddingPlaintxt = Padding(plaintxtChar, plaintxtStrLenth);
 
 		// process key
-		cout << "è¯·è¾“å…¥åŠ å¯†å¯†é’¥(åå…­è¿›åˆ¶å­—ç¬¦ä¸²):" << endl;
+		cout << "ÇëÊäÈë¼ÓÃÜÃÜÔ¿(Ê®Áù½øÖÆ×Ö·û´®):" << endl;
 		while(1)
 		{
     		getline(cin, keyStr);
@@ -494,7 +494,7 @@ int main()
 			if(keyStrLenth == 32)
 				break;
 			else
-				cout << "è¾“å…¥é”™è¯¯ï¼Œé‡æ–°è¾“å…¥ï¼š";
+				cout << "ÊäÈë´íÎó£¬ÖØÐÂÊäÈë£º";
 		}
     	keyChar = HexStrToChar(keyStr, 32);
     	// KeyExpandsion
@@ -517,8 +517,8 @@ int main()
         	totalEnc += CharToHexStr(cipher, 16);
     	}
 		totalEnc += '\0';
-		cout << "åŠ å¯†ç»“æžœä¸ºï¼š" << endl << totalEnc << endl;
-		cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << "\n\n";
+		cout << "¼ÓÃÜ½á¹ûÎª£º" << endl << totalEnc << endl;
+		cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << "\n";
 	}
 
 	if(choose == 1)
@@ -533,7 +533,7 @@ int main()
     	string keyStr;
 
 		// process cipher
-		cout << "è¯·è¾“å…¥å¯†æ–‡åŽŸæ–‡(å¦‚\"2ca87ad3f507b20ffb71f8e9102ffc10\"):" << endl;
+		cout << "ÇëÊäÈëÃÜÎÄÔ­ÎÄ(Èç\"2ca87ad3f507b20ffb71f8e9102ffc10\"):" << endl;
 		int cipherStrLenth;
 		while(1)
 		{
@@ -542,12 +542,12 @@ int main()
 			if(cipherStrLenth % 32 == 0)
 				break;
 			else
-				cout << "è¾“å…¥å¯†æ–‡éž16å­—èŠ‚çš„å€æ•°ï¼Œé‡æ–°è¾“å…¥ï¼š";
+				cout << "ÊäÈëÃÜÎÄ·Ç16×Ö½ÚµÄ±¶Êý£¬ÖØÐÂÊäÈë£º";
 		}
 		cipherChar = HexStrToChar(cipherStr, cipherStrLenth);
 
 		// process key
-		cout << "è¯·è¾“å…¥åŠ å¯†å¯†é’¥(åå…­è¿›åˆ¶å­—ç¬¦ä¸²):" << endl;
+		cout << "ÇëÊäÈë¼ÓÃÜÃÜÔ¿(Ê®Áù½øÖÆ×Ö·û´®):" << endl;
 		while(1)
 		{
     		getline(cin,keyStr);
@@ -555,7 +555,7 @@ int main()
 			if(keyStrLenth == 32)
 				break;
 			else
-				cout << "è¾“å…¥é”™è¯¯ï¼Œé‡æ–°è¾“å…¥ï¼š";
+				cout << "ÊäÈë´íÎó£¬ÖØÐÂÊäÈë£º";
 		}
     	keyChar = HexStrToChar(keyStr, 32);
     	// KeyExpandsion
@@ -579,9 +579,10 @@ int main()
 			totalDec += plaintxt_temp;
 		}
 		totalDec += '\0';
-		cout << "è§£å¯†ç»“æžœä¸ºï¼š" << endl << totalDec << endl;
-		cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << "\n\n";
+		cout << "½âÃÜ½á¹ûÎª£º" << endl << totalDec << endl;
+		cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << "\n";
 	}
-
+	cout << "°´ÏÂ»Ø³µ¼üÒÔÍË³ö...\n";
+	getchar();
     return 0;
 }
