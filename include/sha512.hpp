@@ -3,7 +3,7 @@
 #include <cstring>
 using namespace std;
 
-// ½á¹¹ÌåÓÃÓÚ¶¨Òå¿ØÖÆ¿é
+// ç»“æ„ä½“ç”¨äºå®šä¹‰æ§åˆ¶å—
 typedef struct
 {
     unsigned long long count[2];
@@ -11,20 +11,20 @@ typedef struct
     unsigned char buffer[128];
 } SHA512_Control_Block;
 
-// ³õÊ¼»¯º¯Êı£¬³õÊ¼»¯SHA_CBµÄ¸÷¸öÖµ
+// åˆå§‹åŒ–å‡½æ•°ï¼Œåˆå§‹åŒ–SHA_CBçš„å„ä¸ªå€¼
 void SHA512Init(SHA512_Control_Block *context);
 
-// ½«Êı¾İ¼ÓÈë
+// å°†æ•°æ®åŠ å…¥
 void SHA512Update(SHA512_Control_Block *context, unsigned char *input, unsigned long long inputlen);
 
-// ´¦ÀíÍê×îºóÔÙµ÷ÓÃ£¬Õâ¸ö´¦ÀíÎ²Êı
+// å¤„ç†å®Œæœ€åå†è°ƒç”¨ï¼Œè¿™ä¸ªå¤„ç†å°¾æ•°
 void SHA512Final(SHA512_Control_Block *context, unsigned char digest[32]);
 
-// ¼ÓÃÜ´¦Àíº¯Êı£ºHash¼ÓÃÜµÄºËĞÄ¹¤³§
+// åŠ å¯†å¤„ç†å‡½æ•°ï¼šHashåŠ å¯†çš„æ ¸å¿ƒå·¥å‚
 void SHA512Transform(unsigned long long state[8], unsigned char block[128]);
 
-// ±àÂëº¯Êı£º½«ÕûĞÍ±àÂë×ªÎª×Ö·û
+// ç¼–ç å‡½æ•°ï¼šå°†æ•´å‹ç¼–ç è½¬ä¸ºå­—ç¬¦
 void SHA512Encode(unsigned char *output, unsigned long long *input, unsigned long long len);
 
-// ½âÂëº¯Êı:½«×Ö·ûÊı×é±£´æµÄ±àÂë×ªÎªÕûĞÍ
+// è§£ç å‡½æ•°:å°†å­—ç¬¦æ•°ç»„ä¿å­˜çš„ç¼–ç è½¬ä¸ºæ•´å‹
 void SHA512Decode(unsigned long long *output, unsigned char *input, unsigned long long len);

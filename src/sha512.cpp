@@ -1,6 +1,6 @@
 #include "../include/sha512.hpp"
 
-// ÓÃÓÚ²¹ÆëµÄÊı,×î¶à²¹128×Ö½ÚÒ²¾ÍÊÇ1024bit
+// ç”¨äºè¡¥é½çš„æ•°,æœ€å¤šè¡¥128å­—èŠ‚ä¹Ÿå°±æ˜¯1024bit
 unsigned char PADDING[] = 
 {
     0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -9,8 +9,8 @@ unsigned char PADDING[] =
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-// Ã¿´Î×ÓÑ­»·ÖĞÓÃµ½µÄ³£Á¿
-// ºóÃæ¼ÓULL±íÊ¾long long
+// æ¯æ¬¡å­å¾ªç¯ä¸­ç”¨åˆ°çš„å¸¸é‡
+// åé¢åŠ ULLè¡¨ç¤ºlong long
 static const unsigned long long K[80] = 
 {
     0x428a2f98d728ae22ULL, 0x7137449123ef65cdULL, 0xb5c0fbcfec4d3b2fULL, 0xe9b5dba58189dbbcULL,
@@ -40,7 +40,7 @@ static const unsigned long long K[80] =
 #define RSR64(value, bits) (((value) >> (bits)) | ((value) << (64 - (bits))))
 
 // Ch, Maj operation
-// S:Ring Shift Right    R:Í¬2**128³ıÓàÓÒÒÆ
+// S:Ring Shift Right    R:åŒ2**128é™¤ä½™å³ç§»
 // Sigma0:Sigma0 function
 // Sigma1:Sigma2 function
 // Gamma0:Gamma0 function
@@ -77,45 +77,45 @@ void SHA512Init(SHA512_Control_Block *context)
 
 void SHA512Update(SHA512_Control_Block *context, unsigned char *input, unsigned long long inputlen)
 {
-    unsigned long long index = 0, partlen = 0, i = 0; // i¼ÇÂ¼inputµÄµ±Ç°Î»ÖÃ£¨³õÊ¼Îª0£©
-    index = (context->count[1] >> 3) & 0x7F;  //index:×Ü×Ö³¤³ı127(11111111)È¡ÓàºóµÄÓàÊı
-    partlen = 128 - index;  //partlen:Í¬128Ïà²îµÄ³¤¶È
-    context->count[1] += inputlen << 3;  //¸üĞÂcount
+    unsigned long long index = 0, partlen = 0, i = 0; // iè®°å½•inputçš„å½“å‰ä½ç½®ï¼ˆåˆå§‹ä¸º0ï¼‰
+    index = (context->count[1] >> 3) & 0x7F;  //index:æ€»å­—é•¿é™¤127(11111111)å–ä½™åçš„ä½™æ•°
+    partlen = 128 - index;  //partlen:åŒ128ç›¸å·®çš„é•¿åº¦
+    context->count[1] += inputlen << 3;  //æ›´æ–°count
 
-    // Í³¼Æ×Ö·ûµÄbit³¤¶È£¬Èç¹ûĞ¡ÓÚËµÃ÷ÀàĞÍÒç³öÁË(64bit)ÎŞ·¨×°ÏÂÁË
-    // ÓÉÓÚ×îºóÁôÏÂ128bitÌî³ä×Ö·û³¤¶È£¬Òò¶ø±ØĞëÒıÈëcount[1]±£´æ
+    // ç»Ÿè®¡å­—ç¬¦çš„bité•¿åº¦ï¼Œå¦‚æœå°äºè¯´æ˜ç±»å‹æº¢å‡ºäº†(64bit)æ— æ³•è£…ä¸‹äº†
+    // ç”±äºæœ€åç•™ä¸‹128bitå¡«å……å­—ç¬¦é•¿åº¦ï¼Œå› è€Œå¿…é¡»å¼•å…¥count[1]ä¿å­˜
     // 64bit+64bit=128bit
     if (context->count[1] < (inputlen << 3))
         context->count[0]++;
-    //ÓÒÒÆ¶¯61Î»ºó¾ÍÊÇcount[0]Ó¦¸Ã¼ÇÂ¼µÄÖµ¡££¨×óÒÆ3Î»£¬Òç³öµÄ¾ÍÊÇÓÒÒÆ¶¯61Î»µÄ£©
+    //å³ç§»åŠ¨61ä½åå°±æ˜¯count[0]åº”è¯¥è®°å½•çš„å€¼ã€‚ï¼ˆå·¦ç§»3ä½ï¼Œæº¢å‡ºçš„å°±æ˜¯å³ç§»åŠ¨61ä½çš„ï¼‰
     context->count[0] += inputlen >> 61;
 
     if (inputlen >= partlen)
     {
-        //½«È±µÄpartlen¸ö×Ö½ÚÊı¾İ¼ÓÈë»º³åÇø
+        //å°†ç¼ºçš„partlenä¸ªå­—èŠ‚æ•°æ®åŠ å…¥ç¼“å†²åŒº
         memcpy(&context->buffer[index], input, partlen);
         SHA512Transform(context->h, context->buffer);
 
-        // Èç¹ûÊäÈëµÄ×Ö£¬»¹¿ÉÒÔ½øĞĞ£¨»¹ÓĞÕû128×ÖµÄ£©¾Í¼ÌĞø½øĞĞÒ»´Î¼ÓÃÜÑ­»·
+        // å¦‚æœè¾“å…¥çš„å­—ï¼Œè¿˜å¯ä»¥è¿›è¡Œï¼ˆè¿˜æœ‰æ•´128å­—çš„ï¼‰å°±ç»§ç»­è¿›è¡Œä¸€æ¬¡åŠ å¯†å¾ªç¯
 
         for (i = partlen; i + 128 <= inputlen; i += 128)
             SHA512Transform(context->h, &input[i]);
-        // ½«µ±Ç°Î»ÖÃÉèÎª0
+        // å°†å½“å‰ä½ç½®è®¾ä¸º0
         index = 0;
     }
     else
     {
         i = 0;
     }
-    // ÖØĞÂÉèÖÃbufferÇø£¨´¦Àí¹ıµÄ×Ö±»¸²¸Ç³ÉĞÂ×Ö£©
+    // é‡æ–°è®¾ç½®bufferåŒºï¼ˆå¤„ç†è¿‡çš„å­—è¢«è¦†ç›–æˆæ–°å­—ï¼‰
     memcpy(&context->buffer[index], &input[i], inputlen - i);
 }
 
 void SHA512Final(SHA512_Control_Block *context, unsigned char digest[64]) {
     unsigned int index = 0, padlen = 0;
-    unsigned char bits[16]; // ¼ÇÂ¼×Ö³¤ĞÅÏ¢
-    index = (context->count[1] >> 3) & 0x7F; // ×Ö³¤³ı127(11111111)È¡Óà³¤¶È
-    padlen = (index < 112) ? (112 - index) : (240 - index); // ²¹ÆëµÄ×Ö³¤
+    unsigned char bits[16]; // è®°å½•å­—é•¿ä¿¡æ¯
+    index = (context->count[1] >> 3) & 0x7F; // å­—é•¿é™¤127(11111111)å–ä½™é•¿åº¦
+    padlen = (index < 112) ? (112 - index) : (240 - index); // è¡¥é½çš„å­—é•¿
     SHA512Encode(bits, context->count, 16);
     SHA512Update(context, PADDING, padlen);
     SHA512Update(context, bits, 16);
@@ -166,18 +166,18 @@ void SHA512Transform(unsigned long long state[8], unsigned char block[128])
     unsigned long long t0;
     unsigned long long t1;
     int i = 0;
-    printf("\nÌî³äºó(1024bits):\n0x");
+    printf("\nå¡«å……å(1024bits):\n0x");
     for(int index=0;index<128;index++){
         printf("%02x", block[index]);
     }
     printf("\n");
-    // °ÑstateµÄÖµ¸´ÖÆ¸øS
+    // æŠŠstateçš„å€¼å¤åˆ¶ç»™S
     for ( i = 0; i < 8; i++ )
     {
         S[i] = state[i];
     }
 
-    // ½«×Ö·ûÊı×é±£´æµÄ±àÂë×ªÎªunsigned long long
+    // å°†å­—ç¬¦æ•°ç»„ä¿å­˜çš„ç¼–ç è½¬ä¸ºunsigned long long
     SHA512Decode(W, block, 128);
 
     for ( i = 16; i < 80; i++ )

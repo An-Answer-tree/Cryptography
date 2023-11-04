@@ -3,14 +3,14 @@
 int main()
 {
     cout << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-    cout << "ÇëÊäÈëĞèÒªÇóhashµÄ×Ö·û´®: ";
+    cout << "è¯·è¾“å…¥éœ€è¦æ±‚hashçš„å­—ç¬¦ä¸²: ";
     string inputStr;
     getline(cin, inputStr);
     int inputStrLen = inputStr.length();
     unsigned char* input = new unsigned char[inputStrLen + 1] {0};
     input = (unsigned char*)inputStr.c_str();
 
-    cout <<"ÊäÈë×Ö·û´®µÄÊ®Áù½øÖÆ: 0x";
+    cout <<"è¾“å…¥å­—ç¬¦ä¸²çš„åå…­è¿›åˆ¶: 0x";
     for(int i = 0; i < inputStrLen; i++)
     {
         printf("%02x", input[i]);
@@ -25,15 +25,15 @@ int main()
     SHA512Update(&sha512, input, inputStrLen);
     SHA512Final(&sha512, sha512Code);
 
-    //SHA512½á¹ûÊä³ö
-    printf("ÏûÏ¢:%s\n512Î»¹şÏ£Öµ:", input);
+    //SHA512ç»“æœè¾“å‡º
+    printf("æ¶ˆæ¯:%s\n512ä½å“ˆå¸Œå€¼:", input);
     for (int i = 0; i < 64; i++)
     {
         printf("%02x", sha512Code[i]);
     }
 
     cout << "\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-    cout << "°´ÏÂ»Ø³µ¼üÒÔÍË³ö...\n";
+    cout << "æŒ‰ä¸‹å›è½¦é”®ä»¥é€€å‡º...\n";
     getchar();
     return 0;
 }
